@@ -1,0 +1,86 @@
+# Nuxt dev/build outputs
+.output
+.data
+.nuxt
+.nitro
+.cache
+dist
+
+# Node dependencies
+node_modules
+
+# Logs
+logs
+*.log
+
+# Misc
+.DS_Store
+.fleet
+.idea
+
+# Local env files
+.env
+.env.*
+!.env.example
+
+
+
+
+
+<script setup lang="ts">
+
+import type { BoardDocument } from '~/server/models/Board.model';
+
+definePageMeta({
+	middleware: "auth"
+});
+
+const { data, refresh } = useFetch<BoardDocument[]>('/api/boards');
+
+const showCreateboard = ref(false);
+
+const selectedBoard = ref<BoardDocument | undefined>();
+	
+</script>
+
+<template>
+		 <WrapperDefault>
+		 	<template #actions>
+		 		<UButton 
+		 			size="xs" font="bold" label="Create Board" 
+		 			:ui="{ rounded: 'rounded-full' }" 
+		 			@click="showCreateboard = true"
+		 			class="bg-cyan-300 font-bold"
+		 		/>
+		 	</template>
+
+		 	 <div class="grid grid-cols-3 lg:grid-cols-4 gap-4">
+		 	 	<div v-for="board in data" :key="board._id"
+		 	 		 class="rounded-lg shadow p-2 text-center font-bold text-xl bg-white dark:bg-purple-600"
+		 	 		  @click="() => {
+		 	 		  	selectedBoard = board;
+		 	 		  	showCreateboard = true;
+		 	 		  	console.log('BOARD WITH VALUE', selectedBoard)
+		 	 		}">
+		 	 		{{ board.name }}
+		 	 	</div>
+		 	 </div>
+
+		 	<USlideover v-model="showCreateboard">
+		 		<OverlayHeader :title="selectedBoard ? 'Update Board' : 'Create Board'"
+		 		@click="() => showCreateboard = false" />
+
+		 		<div class="p-4">
+		 			<FormBoard 
+			 			:type="selectedBoard ? 'Create' : 'Update'" 
+			 			:initial-data = "selectedBoard" :on-create="() => {
+			 				refresh();
+			 				showCreateboard.value = false;
+			 			}"  />
+		 		</div>
+		 	</USlideover>
+		 </WrapperDefault>
+</template>
+<style>
+	
+</style>
