@@ -64,12 +64,12 @@ export default NuxtAuthHandler({
 		},
 		//@ts-ignore
 		async session({session, token}){
-			const refrehedUser = await getUser(token._id)
+			const refreshedUser = await getUser(token._id)
 
 			session.user = {
 				...token,
 				...session.user,
-				...refrehedUser
+				...refreshedUser
 			}
 
 			return session

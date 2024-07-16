@@ -15,7 +15,8 @@ export default defineNuxtConfig({
     }
   },
   plugins: [
-    { src: '~/plugins/Quill.client.ts', mode: 'client' }
+    { src: '~/plugins/Quill.client.ts', mode: 'client' },
+    '~/plugins/vue-stroll.js'
   ],
   devtools: { enabled: true },
   modules: ['@nuxt/ui', 'nuxt-server-utils', '@sidebase/nuxt-auth', "@nuxt/image"],

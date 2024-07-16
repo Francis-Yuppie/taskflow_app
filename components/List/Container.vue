@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import draggable from 'vuedraggable'
+import VueStroll from 'vue-stroll'
 
 interface Props{
 	lists: ListDocument[],
